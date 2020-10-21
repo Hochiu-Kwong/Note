@@ -26,6 +26,17 @@ B::print_G2(evaluation_Bt2);
 
 #### 动作1
 
+将cuda_prover_use_origin_compute_H中的这两行替换一下
+
+```
+//G1 *evaluation_At = B::multiexp_G1(B::input_w(inputs), B::params_A(params), m + 1);
+ec_reduce_straus<ECp, C, R>(sA, out_A.get(), A_mults.get(), w, m + 1);
+```
+
+读入的文件改为preprocessed.18.dat.all（结果和origin一样），方便两边结果对比
+
+#### 动作2
+
 将cuda_prover中的这些代码注释掉，换成CPU端的compute_H、multiexp_G1，evaluation_Ht恢复正确
 
 ```
@@ -41,7 +52,7 @@ B::print_G2(evaluation_Bt2);
     // G1 *evaluation_Ht = B::read_pt_ECp(out_H.get());
 ```
 
-#### 动作2
+#### 动作3
 
 将cuda_prover中的 evaluation_Ht 用 cudaMallocHost分配，便于debug和双版本对比
 
