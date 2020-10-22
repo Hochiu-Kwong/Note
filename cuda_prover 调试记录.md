@@ -56,5 +56,14 @@ ec_reduce_straus<ECp, C, R>(sA, out_A.get(), A_mults.get(), w, m + 1);
 
 将cuda_prover中的 evaluation_Ht 用 cudaMallocHost分配，便于debug和双版本对比
 
-接下来将对cuda_prover_use_origin_compute_H的coefficients_for_H改写，使其支持查看结果
+接下来增加print_Fr方法，使coefficients_for_H支持查看结果，在n=18的情况下，coefficients_for_H变量内容和18_cpu_result.log结果对应
 
+    void mnt4753_libsnark::print_Fr(mnt4753_libsnark::vector_Fr *scalar_start, size_t i) {
+     std::vector<Fr<mnt4753_pp>> &P = *scalar_start->data;
+     for(int j = 0 ; j < i ; j++){
+      for (int k = 0; k < 12; ++k) {
+        auto H = P[j].mont_repr.data;
+        printf("%lu%c", H[k], " \n"[k + 1 == 12]);
+      }
+     }
+    }
